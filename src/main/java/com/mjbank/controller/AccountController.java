@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +43,7 @@ public class AccountController {
 	}
 	
 	@PostMapping("/addAccount")
-	public ResponseEntity<?> addAccount(@RequestBody Account account) {
+	public ResponseEntity<?> addAccount(@Valid @RequestBody Account account) {
 		if(account.getOpeningBalance() < 500) {
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		} else {

@@ -8,6 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "Account")
@@ -29,11 +34,13 @@ public class Account {
 	@Column(name = "account_number")
 	private String accountNumber = "1001";
 	
+	@Min(value = 500)
 	@Column(name = "opening_balance")
 	private double openingBalance;
 	
 	private double balance;
 	
+	@Min(100000000)
 	@Column(name = "social_security")
 	private int ssNo;
 	
@@ -83,11 +90,9 @@ public class Account {
 
 	public void setOpeningBalance(double openingBalance) {
 		
-		if(openingBalance >= 500)  {
 		this.openingBalance = openingBalance;
 		this.balance = openingBalance;
-		}else
-			System.out.println("Balance must be at least $500");
+
 	}
 
 	public int getSsNo() {
