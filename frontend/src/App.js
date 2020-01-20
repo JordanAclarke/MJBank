@@ -11,7 +11,7 @@ function App() {
     <div style={{height:'100vh'}} >
       <div className="d-flex h-100 w-100" id="wrapper">
        <div className="bg-light border-right" style={{width:"17%"}}id="sidebar-wrapper">
-      <div className="sidebar-heading" style={{fontSize: "40px", fontFamily: "'Bangers', cursive", color: "#673ab7"}}>MJ Bank 💸 </div>
+      <div id ="logo" className="sidebar-heading" style={{fontSize: "40px", fontFamily: "'Bangers', cursive", color: "#673ab7"}}>MJ Bank 💸 </div>
       <div className="list-group list-group-flush">
         <a href="/Account" className="list-group-item list-group-item-action bg-light">Accounts</a>
         <a href="/Deposit" className="list-group-item list-group-item-action bg-light">Deposit</a>

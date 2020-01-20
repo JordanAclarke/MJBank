@@ -7,6 +7,7 @@ class Withdraw extends Component {
     state = {
         account: {},
         id: '',
+        accountNum: '',
         display: false,
         balanceToAdd: '',
         redirectToAllAccounts: false
@@ -21,6 +22,17 @@ class Withdraw extends Component {
         display: true})
         })
     }
+
+    getByAccountNum=(e) => {
+        e.preventDefault();
+        console.log(this.state.accountNum)
+        axios.get(`http://localhost:8080/api/getByAccountNum/${this.state.accountNum}`).then((res) => {
+        console.log(res.data)    
+        this.setState({account: res.data,
+        display: true})
+        })
+    }
+
     deposit=(e) => {
         e.preventDefault();
         console.log(this.state.account.balance);
@@ -32,6 +44,7 @@ class Withdraw extends Component {
             this.setState({account: res.data, redirectToAllAccounts: true});
         })
     }
+    
 
     onChange = (e) => {
         this.setState({id: e.target.value})
@@ -40,6 +53,9 @@ class Withdraw extends Component {
     balanceOnChange = (e) => {
         this.setState({balance: e.target.value})
         
+    }
+    accountNumOnChange =(e) => {
+        this.setState({accountNum: e.target.value})
     }
     async componentDidMount(){
         const request = await fetch('http://localhost:8080/api/getAllAccounts');
@@ -82,6 +98,7 @@ class Withdraw extends Component {
             );
         }
         return ( <div>
+            <h1 className="title" style={{textAlign: "center"}}>🏧</h1>
             <form onSubmit={this.getAccount}className="mx-auto mt-5 w-50" >
                 {/* <input name="id" type =" text" placeholder="Enter Account ID" value={this.state.id} 
                 onChange={this.onChange}
@@ -93,6 +110,19 @@ class Withdraw extends Component {
                 </Form.Group>
                 <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
             </form>
+                <hr></hr>
+            <form onSubmit={this.getByAccountNum}className="mx-auto mt-5 w-50" >
+                {/* <input name="id" type =" text" placeholder="Enter Account ID" value={this.state.id} 
+                onChange={this.onChange}
+                /> */}
+                <Form.Group controlId="Balance" value={this.state.accountNum} 
+                onChange={this.accountNumOnChange}>
+                    <Form.Label>Enter Account Number</Form.Label>
+                    <Form.Control name="id" type="text" placeholder="Account Number:" />
+                </Form.Group>
+                <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
+            </form>
+
         </div> );
     }
 }

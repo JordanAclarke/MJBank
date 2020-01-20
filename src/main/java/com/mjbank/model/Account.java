@@ -40,7 +40,7 @@ public class Account {
 	
 	private double balance;
 	
-	@Column(name = "social_security")
+	@Column(name = "social_security", unique = true)
 	private String ssNo;
 	
 	private static int routingNumber = 051000017;

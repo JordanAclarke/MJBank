@@ -7,6 +7,7 @@ class DeleteAccount extends Component {
     state = {
         account: {},
         id: '',
+        accountNum: '',
         display: false,
         balanceToAdd: '',
         redirectToAllAccounts: false
@@ -16,6 +17,15 @@ class DeleteAccount extends Component {
         e.preventDefault();
         console.log(this.state.id)
         axios.get(`http://localhost:8080/api/getAccount/${this.state.id}`).then((res) => {
+        console.log(res.data)    
+        this.setState({account: res.data,
+        display: true})
+        })
+    }
+    getByAccountNum=(e) => {
+        e.preventDefault();
+        console.log(this.state.accountNum)
+        axios.get(`http://localhost:8080/api/getByAccountNum/${this.state.accountNum}`).then((res) => {
         console.log(res.data)    
         this.setState({account: res.data,
         display: true})
@@ -39,6 +49,9 @@ class DeleteAccount extends Component {
     balanceOnChange = (e) => {
         this.setState({balance: e.target.value})
         
+    }
+    accountNumOnChange =(e) => {
+        this.setState({accountNum: e.target.value})
     }
     async componentDidMount(){
         const request = await fetch('http://localhost:8080/api/getAllAccounts');
@@ -79,6 +92,7 @@ class DeleteAccount extends Component {
             
         }
         return ( <div>
+            <h1 className="title" style={{textAlign: "center"}}>😔</h1>
             <form onSubmit={this.getAccount}className="mx-auto mt-5 w-50" >
                 {/* <input name="id" type =" text" placeholder="Enter Account ID" value={this.state.id} 
                 onChange={this.onChange}
@@ -91,6 +105,21 @@ class DeleteAccount extends Component {
                 <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
            
             </form>
+
+            <hr></hr>
+
+<form onSubmit={this.getByAccountNum}className="mx-auto mt-5 w-50" >
+    {/* <input name="id" type =" text" placeholder="Enter Account ID" value={this.state.id} 
+    onChange={this.onChange}
+    /> */}
+    <Form.Group controlId="Balance" value={this.state.accountNum} 
+    onChange={this.accountNumOnChange}>
+        <Form.Label>Enter Account Number</Form.Label>
+        <Form.Control name="id" type="text" placeholder="Account Number:" />
+    </Form.Group>
+    <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
+</form>
+
         </div> );
     }
 }
