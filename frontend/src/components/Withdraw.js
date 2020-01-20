@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
-class Deposit extends Component {
+class Withdraw extends Component {
     state = {
         account: {},
         id: '',
@@ -27,7 +27,7 @@ class Deposit extends Component {
         // axios.put(`http://localhost:8080/api/deposit/${this.state.id}balance=${this.state.balance}`)
         let formData = new FormData();
         formData.append("balance",this.state.balanceToAdd)
-        axios.put(`http://localhost:8080/api/deposit/${this.state.id}?balance=${this.state.balance}`).then((res) => {
+        axios.put(`http://localhost:8080/api/withdraw/${this.state.id}?balance=${this.state.balance}`).then((res) => {
             this.setState({account: res.data, redirectToAllAccounts: true});
         })
     }
@@ -71,8 +71,8 @@ class Deposit extends Component {
                     </Table>
                     <form onSubmit={this.deposit} className="mx-auto mt-5 w-50" >
                 <Form.Group controlId="Balance" value={this.state.account.balance} onChange={this.balanceOnChange}>
-                    <Form.Label>Deposit Amount</Form.Label>
-                    <Form.Control name="balance" type="text" placeholder="Enter Deposit Amount" />
+                    <Form.Label>Withdraw Amount</Form.Label>
+                    <Form.Control name="balance" type="text" placeholder="Enter Withdrawal Amount" />
                 </Form.Group>
                 <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
     
@@ -96,4 +96,4 @@ class Deposit extends Component {
     }
 }
  
-export default Deposit;
+export default Withdraw;
