@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
-import Paper from '@material-ui/core/Paper';
-import {axios} from 'axios';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Account extends Component {
@@ -13,7 +12,7 @@ class Account extends Component {
                  lastName:'',
                  address:'',
                  ssNo:'',
-                 openingDeposit:''
+                 openingBalance:''
              } }
  
     viewacc=()=>{
@@ -39,8 +38,9 @@ class Account extends Component {
 
     createaccount = () =>
     {
+        
         axios.post('http://localhost:8080/api/addAccount',this.state.newaccount).then((res)=>{
-            console.log(res);
+
         }).catch(error =>{console.log(error)})
         
     }
@@ -51,7 +51,7 @@ class Account extends Component {
         var form;
         if(!this.state.viewtable){
         form =  <div className="mx-auto mt-5 w-50">
-            <div >
+            <Form >
                 <Form.Group controlId="FirstName" value={this.state.newaccount.firstName} onChange={this.onChange}>
                     <Form.Label>First Name</Form.Label>
                     <Form.Control name="firstName" type="text"  placeholder="Please Enter First Name" />
@@ -72,15 +72,15 @@ class Account extends Component {
                     <Form.Control name="ssNo" type="password"  placeholder="Please Enter SS Number" />
                 </Form.Group>
     
-                <Form.Group controlId="Opening Deposit" value={this.state.newaccount.openingDeposit} onChange={this.onChange}>
+                <Form.Group controlId="Opening Deposit" value={this.state.newaccount.openingBalance} onChange={this.onChange}>
                     <Form.Label>Opening Deposit</Form.Label>
-                    <Form.Control name="openingDeposit" type="text" placeholder="Minimum amount $500.00" />
+                    <Form.Control name="openingBalance" type="text" placeholder="Minimum amount $500.00" />
                 </Form.Group>
                 
-                <Button variant="primary" onClick={this.createaccount}>
+                <Button variant="primary" type="submit" onClick={this.createaccount}>
                     Submit
                 </Button>
-            </div>
+            </Form>
         </div>;
         }else{
             form =<div className="mx-auto mt-5">
