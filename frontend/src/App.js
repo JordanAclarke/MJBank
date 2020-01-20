@@ -19,7 +19,7 @@ function App() {
         <a href="#" className="list-group-item list-group-item-action bg-light">Close Account</a>
       </div> 
     </div>
-    <div class="container-fluid"style={{width:"83%"}}>
+    <div className="container-fluid"style={{width:"83%"}}>
           <Router>
                 <Switch>
                     <Route exact path='/Account' component={Account}/>

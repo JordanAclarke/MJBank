@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
 import Paper from '@material-ui/core/Paper';
-import {axios} from 'axios';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Account extends Component {
  
     state = { viewtable:true,
              accounts:[],
-             newaccount: {
-                 firstName:'',
-                 lastName:'',
-                 address:'',
-                 ssNo:'',
-                 openingDeposit:''
-             } }
+             newaccount: {} 
+            }
  
     viewacc=()=>{
         this.setState({viewtable:true})
@@ -39,8 +34,10 @@ class Account extends Component {
 
     createaccount = () =>
     {
-        axios.post('http://localhost:8080/api/addAccount',this.state.newaccount).then((res)=>{
-            console.log(res);
+        
+        console.log(this.state)
+        axios.post('http://localhost:8080/api/addAccount/',this.state.newaccount).then(()=>{
+            this.componentDidMount();
         }).catch(error =>{console.log(error)})
         
     }
@@ -52,6 +49,7 @@ class Account extends Component {
         if(!this.state.viewtable){
         form =  <div className="mx-auto mt-5 w-50">
             <div >
+                <form onSubmit={this.createaccount}>
                 <Form.Group controlId="FirstName" value={this.state.newaccount.firstName} onChange={this.onChange}>
                     <Form.Label>First Name</Form.Label>
                     <Form.Control name="firstName" type="text"  placeholder="Please Enter First Name" />
@@ -77,9 +75,8 @@ class Account extends Component {
                     <Form.Control name="openingDeposit" type="text" placeholder="Minimum amount $500.00" />
                 </Form.Group>
                 
-                <Button variant="primary" onClick={this.createaccount}>
-                    Submit
-                </Button>
+                <input type="submit" />
+                </form>
             </div>
         </div>;
         }else{
