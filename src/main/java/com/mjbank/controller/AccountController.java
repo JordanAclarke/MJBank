@@ -25,8 +25,8 @@ import com.google.gson.Gson;
 import com.mjbank.model.Account;
 import com.mjbank.service.AccountService;
 
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class AccountController {
 	
@@ -111,6 +111,7 @@ public class AccountController {
 		accountService.deleteAccount(id);
 		return "Account Deleted";
 	}
+
 	
 	
 

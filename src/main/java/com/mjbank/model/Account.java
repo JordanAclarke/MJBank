@@ -40,9 +40,8 @@ public class Account {
 	
 	private double balance;
 	
-	@Min(100000000)
 	@Column(name = "social_security")
-	private int ssNo;
+	private String ssNo;
 	
 	private static int routingNumber = 051000017;
 	
@@ -95,14 +94,13 @@ public class Account {
 
 	}
 
-	public int getSsNo() {
+	public String getSsNo() {
 		return ssNo;
 	}
 
-	public void setSsNo(int ssNo) {
+	public void setSsNo(String ssNo) {
 		this.ssNo = ssNo;
-		String length = Integer.toString(ssNo);
-		this.accountNumber = this.accountNumber + length.substring(length.length() - 4);
+		this.accountNumber = this.accountNumber + ssNo.substring(ssNo.length() - 4);
 	}
 
 	public int getId() {

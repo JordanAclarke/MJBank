@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
+<<<<<<< HEAD
 import Paper from '@material-ui/core/Paper';
+=======
+>>>>>>> branch 'master' of https://github.com/JordanAclarke/MJBank.git
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -8,8 +11,18 @@ class Account extends Component {
  
     state = { viewtable:true,
              accounts:[],
+<<<<<<< HEAD
              newaccount: {} 
             }
+=======
+             newaccount: {
+                 firstName:'',
+                 lastName:'',
+                 address:'',
+                 ssNo:'',
+                 openingBalance:''
+             } }
+>>>>>>> branch 'master' of https://github.com/JordanAclarke/MJBank.git
  
     viewacc=()=>{
         this.setState({viewtable:true})
@@ -35,9 +48,14 @@ class Account extends Component {
     createaccount = () =>
     {
         
+<<<<<<< HEAD
         console.log(this.state)
         axios.post('http://localhost:8080/api/addAccount/',this.state.newaccount).then(()=>{
             this.componentDidMount();
+=======
+        axios.post('http://localhost:8080/api/addAccount',this.state.newaccount).then((res)=>{
+
+>>>>>>> branch 'master' of https://github.com/JordanAclarke/MJBank.git
         }).catch(error =>{console.log(error)})
         
     }
@@ -48,8 +66,12 @@ class Account extends Component {
         var form;
         if(!this.state.viewtable){
         form =  <div className="mx-auto mt-5 w-50">
+<<<<<<< HEAD
             <div >
                 <form onSubmit={this.createaccount}>
+=======
+            <Form >
+>>>>>>> branch 'master' of https://github.com/JordanAclarke/MJBank.git
                 <Form.Group controlId="FirstName" value={this.state.newaccount.firstName} onChange={this.onChange}>
                     <Form.Label>First Name</Form.Label>
                     <Form.Control name="firstName" type="text"  placeholder="Please Enter First Name" />
@@ -70,14 +92,21 @@ class Account extends Component {
                     <Form.Control name="ssNo" type="password"  placeholder="Please Enter SS Number" />
                 </Form.Group>
     
-                <Form.Group controlId="Opening Deposit" value={this.state.newaccount.openingDeposit} onChange={this.onChange}>
+                <Form.Group controlId="Opening Deposit" value={this.state.newaccount.openingBalance} onChange={this.onChange}>
                     <Form.Label>Opening Deposit</Form.Label>
-                    <Form.Control name="openingDeposit" type="text" placeholder="Minimum amount $500.00" />
+                    <Form.Control name="openingBalance" type="text" placeholder="Minimum amount $500.00" />
                 </Form.Group>
                 
+<<<<<<< HEAD
                 <input type="submit" />
                 </form>
             </div>
+=======
+                <Button variant="primary" type="submit" onClick={this.createaccount}>
+                    Submit
+                </Button>
+            </Form>
+>>>>>>> branch 'master' of https://github.com/JordanAclarke/MJBank.git
         </div>;
         }else{
             form =<div className="mx-auto mt-5">
