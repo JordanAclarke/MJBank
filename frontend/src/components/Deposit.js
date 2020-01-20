@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
+import Popup from "reactjs-popup";
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
 class Deposit extends Component {
     state = {
@@ -8,7 +9,8 @@ class Deposit extends Component {
         id: '',
         display: false,
         balanceToAdd: '',
-        redirectToAllAccounts: false
+        redirectToAllAccounts: false,
+        desposited: false
     }
 
     getAccount=(e) => {
@@ -28,7 +30,7 @@ class Deposit extends Component {
         let formData = new FormData();
         formData.append("balance",this.state.balanceToAdd)
         axios.put(`http://localhost:8080/api/deposit/${this.state.id}?balance=${this.state.balance}`).then((res) => {
-            this.setState({account: res.data, redirectToAllAccounts: true});
+            this.setState({account: res.data, redirectToAllAccounts: true, desposited: true});
         })
     }
 
@@ -47,6 +49,7 @@ class Deposit extends Component {
         // this.setState({accounts:body});
     }
     render() { 
+      
       if(this.state.redirectToAllAccounts) {
         return <Redirect to="/Account" />
       }

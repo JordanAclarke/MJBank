@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
-class Withdraw extends Component {
+class DeleteAccount extends Component {
     state = {
         account: {},
         id: '',
@@ -21,16 +21,15 @@ class Withdraw extends Component {
         display: true})
         })
     }
-    deposit=(e) => {
+    deleteAccount=(e) => {
         e.preventDefault();
         console.log(this.state.account.balance);
-    
-        // axios.put(`http://localhost:8080/api/deposit/${this.state.id}balance=${this.state.balance}`)
-        let formData = new FormData();
-        formData.append("balance",this.state.balanceToAdd)
-        axios.put(`http://localhost:8080/api/withdraw/${this.state.id}?balance=${this.state.balance}`).then((res) => {
-            this.setState({account: res.data, redirectToAllAccounts: true});
+        axios.delete(`http://localhost:8080/api/deleteAccount/${this.state.id}`).then((res) => {
+            this.setState({redirectToAllAccounts: true});
         })
+    }
+    denyDelete=() => {
+        this.setState({redirectToAllAccounts: true})
     }
 
     onChange = (e) => {
@@ -70,16 +69,14 @@ class Withdraw extends Component {
                        <td>$ {(this.state.account.balance)}</td>
                     </tbody>
                     </Table>
-                    <form onSubmit={this.deposit} className="mx-auto mt-5 w-50" >
-                <Form.Group controlId="Balance" value={this.state.account.balance} onChange={this.balanceOnChange}>
-                    <Form.Label>Withdraw Amount</Form.Label>
-                    <Form.Control name="balance" type="text" placeholder="Enter Withdrawal Amount" />
-                </Form.Group>
-                <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
-    
-                </form>
+                  <Form.Label>Are You Sure You Want To Delete This Account?</Form.Label>
+                  &nbsp;&nbsp;
+                  <Button variant="outline-danger" onClick={this.deleteAccount}>Yes</Button>
+                  &nbsp;&nbsp;
+                  <Button variant="outline-warning"onClick={this.denyDelete} >No</Button>
                 </div>
             );
+            
         }
         return ( <div>
             <form onSubmit={this.getAccount}className="mx-auto mt-5 w-50" >
@@ -92,9 +89,10 @@ class Withdraw extends Component {
                     <Form.Control name="id" type="text" placeholder="AccountID:" />
                 </Form.Group>
                 <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
+           
             </form>
         </div> );
     }
 }
  
-export default Withdraw;
+export default DeleteAccount;

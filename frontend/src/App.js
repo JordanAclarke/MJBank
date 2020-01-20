@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Account from './components/Account';
 import Deposit from './components/Deposit';
 import Withdraw from './components/Withdraw';
+import CloseAccount from './components/DeleteAccount'
 function App() {
   return (
     <div style={{height:'100vh'}} >
@@ -16,7 +17,7 @@ function App() {
         <a href="/Deposit" className="list-group-item list-group-item-action bg-light">Deposit</a>
         <a href="/Withdraw" className="list-group-item list-group-item-action bg-light">Withdraw</a>
         <a href="#" className="list-group-item list-group-item-action bg-light">Transfer</a>
-        <a href="#" className="list-group-item list-group-item-action bg-light">Close Account</a>
+        <a href="/CloseAccount" className="list-group-item list-group-item-action bg-light">Close Account</a>
       </div> 
     </div>
     <div className="container-fluid"style={{width:"83%"}}>
@@ -25,6 +26,7 @@ function App() {
                     <Route exact path='/Account' component={Account}/>
                     <Route exact path='/Deposit' component={Deposit}/>
                     <Route exact path='/Withdraw' component={Withdraw}/>
+                    <Route exact path='/CloseAccount' component={CloseAccount}/>
                 </Switch>
             </Router>
       </div>

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
-
 import Paper from '@material-ui/core/Paper';
-
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Redirect } from 'react-router';
 
 class Account extends Component {
  
@@ -19,7 +18,7 @@ class Account extends Component {
                  address:'',
                  ssNo:'',
                  openingBalance:''
-             }
+             },
             } 
 
  
@@ -44,6 +43,15 @@ class Account extends Component {
         this.setState({accounts:body});
     }
 
+    getAccount=(e) => {
+        e.preventDefault();
+        console.log(this.state.id)
+        axios.get(`http://localhost:8080/api/getAccount/${this.state.id}`).then((res) => {
+        console.log(res.data)    
+        this.setState({singleAccount: res.data})
+        })
+    }
+
     createaccount = () =>
     {
         
@@ -61,6 +69,7 @@ class Account extends Component {
     
     
     render() { 
+
         const {accounts} = this.state;
         var form;
         if(!this.state.viewtable){
