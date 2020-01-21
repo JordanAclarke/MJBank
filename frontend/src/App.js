@@ -36,6 +36,7 @@ function App() {
                         <div className="container-fluid"style={{width:"83%"}}><CloseAccount /></div>
                         </Route>
                     
+
                 </Switch>
             </Router>
 
