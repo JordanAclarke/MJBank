@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Modal from 'react-bootstrap/Modal';
-
-
+import {Typeahead} from 'react-bootstrap-typeahead';
+import Modal from 'react-bootstrap/Modal'
 
 class Account extends Component {
  
@@ -22,7 +21,8 @@ class Account extends Component {
              },
              show:false,
              accountNumber:'',
-             Transaction:[]
+             Transaction:[],
+             name: []
             } 
 
  
@@ -50,18 +50,16 @@ class Account extends Component {
         e.preventDefault();
         console.log(this.state.id)
         axios.get(`http://localhost:8080/api/getAccount/${this.state.id}`).then((res) => {
-        console.log(res.data)    
-        this.setState({singleAccount: res.data})
+           
+        
         })
     }
 
     createaccount = () =>
     {
-        
-
-        console.log(this.state)
         axios.post('http://localhost:8080/api/addAccount/',this.state.newaccount).then(()=>{
             this.componentDidMount();
+          
 
 
         }).catch(error =>{console.log(error)})
@@ -115,14 +113,14 @@ class Account extends Component {
                     <Form.Control name="openingBalance" type="text" placeholder="Minimum amount $500.00" />
                 </Form.Group>
                 
-                <input type="submit" />
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
                 <Form />
                 </form>
             </div>
 
-                <Button variant="primary" type="submit" onClick={this.createaccount}>
-                    Submit
-                </Button>
+                
         </div>;
         }else{
             form =<div className="mx-auto mt-5">
@@ -164,25 +162,44 @@ class Account extends Component {
             {form}
 
         
+        
             <Modal
             size="xl"
             show={this.state.show}
             onHide={this.setnotShow.bind(false)}
             dialogClassName="modal-90w"
-            aria-labelledby="example-custom-modal-styling-title-xl"
-      >
+            aria-labelledby="example-custom-modal-styling-title-xl">
         <Modal.Header closeButton>
           <Modal.Title id="example-custom-modal-styling-title-xl">
-            Custom Modal Styling
+            Transactions {this.state.name}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            {this.state.Transaction.map((trans) => <p>
-            {trans.id}
-            {trans.type}
-            {trans.date}
-            {trans.amount}
-          </p>)}
+        <Table striped bordered hover>
+              
+  <thead>
+  <tr>
+      <th>#</th>
+      <th>Trans Name</th>
+      <th>Date Posted</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+  {this.state.Transaction.map((trans) => 
+    <tr>
+      <td> {trans.id}</td>
+      <td>{trans.type}</td>
+      <td>{trans.date}</td>
+      <td>${(trans.amount).toFixed(2)}</td>
+    </tr>
+  )}
+  </tbody>
+  
+</Table>
+
+            
+           
         </Modal.Body>
       </Modal>
    
