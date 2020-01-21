@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Modal from 'react-bootstrap/Modal'
+import Modal from 'react-bootstrap/Modal';
+
+
 
 class Account extends Component {
  
@@ -41,7 +43,6 @@ class Account extends Component {
     async componentDidMount(){
         const request = await fetch('http://localhost:8080/api/getAllAccounts');
         const body = await request.json();
-        console.log(body);
         this.setState({accounts:body});
     }
 
@@ -147,7 +148,7 @@ class Account extends Component {
                     </Table>
             </div>;
         }
-    
+        
         return ( <div>
             <Container >
             <Nav fill variant="tabs" defaultActiveKey="/home">
@@ -158,17 +159,20 @@ class Account extends Component {
                 <Nav.Link eventKey="link-2" onClick={this.viewform}>Add New Account</Nav.Link>
             </Nav.Item>
             </Nav>
+
           
             {form}
+
         
             <Modal
+            size="xl"
             show={this.state.show}
             onHide={this.setnotShow.bind(false)}
             dialogClassName="modal-90w"
-            aria-labelledby="example-custom-modal-styling-title"
+            aria-labelledby="example-custom-modal-styling-title-xl"
       >
         <Modal.Header closeButton>
-          <Modal.Title id="example-custom-modal-styling-title">
+          <Modal.Title id="example-custom-modal-styling-title-xl">
             Custom Modal Styling
           </Modal.Title>
         </Modal.Header>
