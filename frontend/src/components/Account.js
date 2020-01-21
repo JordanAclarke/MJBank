@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
-import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Redirect } from 'react-router';
+import Modal from 'react-bootstrap/Modal'
 
 class Account extends Component {
  
@@ -19,6 +18,9 @@ class Account extends Component {
                  ssNo:'',
                  openingBalance:''
              },
+             show:false,
+             accountNumber:'',
+             Transaction:[]
             } 
 
  
@@ -64,12 +66,21 @@ class Account extends Component {
         }).catch(error =>{console.log(error)})
         
     }
+
+    setShow=(a,accountNumber)=>{
+        this.setState({show:a, accountNumber:accountNumber})
+        axios.get('http://localhost:8080/api/transactions/'+accountNumber).then((res)=>{
+            this.setState({Transaction:res.data});
+        })
+    }
+    setnotShow=(a)=>{
+        this.setState({show:a})
+    }
     
 
     
     
     render() { 
-
         const {accounts} = this.state;
         var form;
         if(!this.state.viewtable){
@@ -125,7 +136,7 @@ class Account extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                       {accounts.map((account) =>  (<tr>
+                       {accounts.map((account) =>  (<tr onClick={() => this.setShow(true,account.id)}>
                        <td>{account.accountNumber}</td>
                        <td>{account.firstName}</td>
                        <td>{account.lastName}</td>
@@ -149,6 +160,27 @@ class Account extends Component {
             </Nav>
           
             {form}
+        
+            <Modal
+            show={this.state.show}
+            onHide={this.setnotShow.bind(false)}
+            dialogClassName="modal-90w"
+            aria-labelledby="example-custom-modal-styling-title"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">
+            Custom Modal Styling
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            {this.state.Transaction.map((trans) => <p>
+            {trans.id}
+            {trans.type}
+            {trans.date}
+            {trans.amount}
+          </p>)}
+        </Modal.Body>
+      </Modal>
    
     
     </Container></div> );

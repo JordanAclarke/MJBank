@@ -31,7 +31,7 @@ public class Account {
 	
 	private String address;
 	
-	@Column(name = "account_number")
+	@Column(name = "account_number", unique = true)
 	private String accountNumber = "1001";
 	
 	@Min(value = 500)
