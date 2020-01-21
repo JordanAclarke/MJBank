@@ -12,3 +12,24 @@ code {
     monospace;
 }
 
+/* .section {
+  text-align: center;
+  font-size: 6rem;
+  font-family: "Fascinate", cursive;
+  padding: 10px;
+  margin: 15px;
+  z-index: 10;
+  opacity: 0.8;
+} */
+.video-container {
+  position: fixed;
+  min-height: 100%;
+  min-width: 100%;
+  right: 0;
+  bottom: 20;
+  background-size: cover;
+}
+/* .name {
+  position: relative;
+  top: 2em;
+} */
