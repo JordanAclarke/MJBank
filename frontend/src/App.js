@@ -31,6 +31,10 @@ function App() {
                     <Nav />
                     <div className="container-fluid"style={{width:"83%"}}><Account /></div>
                     </Route>
+                    <Route exact path='/Deposit' > 
+                    <Nav />
+                    <div className="container-fluid"style={{width:"83%"}}><Deposit /></div>
+                    </Route>
                       <Route exact path='/CloseAccount' >
                         <Nav />
                         <div className="container-fluid"style={{width:"83%"}}><CloseAccount /></div>
