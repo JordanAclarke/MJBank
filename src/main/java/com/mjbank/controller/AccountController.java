@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.mjbank.model.Account;
+import com.mjbank.model.Transaction;
 import com.mjbank.repository.AccountRepository;
 import com.mjbank.service.AccountService;
+import com.mjbank.service.TransactionService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
@@ -33,6 +35,9 @@ public class AccountController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private TransactionService transactionService;
 	
 	
 	@GetMapping("/getAllAccounts")
@@ -58,6 +63,11 @@ public class AccountController {
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		} else {
 		accountService.addAccount(account);
+		Transaction t = new Transaction();
+		t.setType("Deposit");
+		t.setAmount(account.getOpeningBalance());
+		t.setAccount(account);
+		transactionService.saveTrans(t);
 		Account newAccount = account;
 		return new ResponseEntity<Account>(newAccount, HttpStatus.OK);
 		}
@@ -84,6 +94,10 @@ public class AccountController {
 		newAccount.setBalance(newBalance);
 //		Testing Purposes
 		accountService.updateAccount(newAccount);
+		
+		  Transaction t =new Transaction(); t.setAccount(newAccount);
+		  t.setType("Deposit"); t.setAmount(balance); transactionService.saveTrans(t);
+		 
 		return new ResponseEntity<String>("Successfully Updated Balance", HttpStatus.ACCEPTED);
 	}
 	
@@ -128,17 +142,7 @@ public class AccountController {
 	
 	@GetMapping("/getByAccountNum/{accountNumber}")
 	public ResponseEntity<Account> findByAccNum(@PathVariable("accountNumber") String accountNumber) {
-		Account account = null;
-		List<Account> accountList = accountService.getAllAccounts();
-		for(Account a: accountList) {
-			if(a.getAccountNumber().equals(accountNumber)) {
-				account = a;
-			}
-		}
-		if(account == null) {
-			return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
-		}
-		System.out.println(account.toString());
+		Account account = accountService.getbyno(accountNumber);
 		return new ResponseEntity<Account>(account, HttpStatus.OK);
 	}
 	

@@ -30,5 +30,7 @@ public class AccountService {
 	public void updateAccount(Account account) {
 		accountRepository.save(account);
 	}
-	
+	public Account getbyno(String accno) {
+		return accountRepository.findByAccountNumber(accno).get();
+	}
 }
