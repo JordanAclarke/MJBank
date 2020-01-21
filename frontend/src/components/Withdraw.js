@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import Popup from "reactjs-popup";
+
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
-class Deposit extends Component {
+class Withdraw extends Component {
     state = {
         account: {},
         id: '',
         accountNum: '',
         display: false,
         balanceToAdd: '',
-        redirectToAllAccounts: false,
-        desposited: false
+        redirectToAllAccounts: false
     }
 
     getAccount=(e) => {
@@ -33,6 +32,7 @@ class Deposit extends Component {
         display: true})
         })
     }
+
     deposit=(e) => {
         e.preventDefault();
         console.log(this.state.account.balance);
@@ -40,10 +40,11 @@ class Deposit extends Component {
         // axios.put(`http://localhost:8080/api/deposit/${this.state.id}balance=${this.state.balance}`)
         let formData = new FormData();
         formData.append("balance",this.state.balanceToAdd)
-        axios.put(`http://localhost:8080/api/deposit/${this.state.id}?balance=${this.state.balance}`).then((res) => {
-            this.setState({account: res.data, redirectToAllAccounts: true, desposited: true});
+        axios.put(`http://localhost:8080/api/withdraw/${this.state.id}?balance=${this.state.balance}`).then((res) => {
+            this.setState({account: res.data, redirectToAllAccounts: true});
         })
     }
+    
 
     onChange = (e) => {
         this.setState({id: e.target.value})
@@ -63,7 +64,6 @@ class Deposit extends Component {
         // this.setState({accounts:body});
     }
     render() { 
-      
       if(this.state.redirectToAllAccounts) {
         return <Redirect to="/Account" />
       }
@@ -88,8 +88,8 @@ class Deposit extends Component {
                     </Table>
                     <form onSubmit={this.deposit} className="mx-auto mt-5 w-50" >
                 <Form.Group controlId="Balance" value={this.state.account.balance} onChange={this.balanceOnChange}>
-                    <Form.Label>Deposit Amount</Form.Label>
-                    <Form.Control name="balance" type="text" placeholder="Enter Deposit Amount" />
+                    <Form.Label>Withdraw Amount</Form.Label>
+                    <Form.Control name="balance" type="text" placeholder="Enter Withdrawal Amount" />
                 </Form.Group>
                 <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
     
@@ -110,9 +110,7 @@ class Deposit extends Component {
                 </Form.Group>
                 <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
             </form>
-
-            <hr></hr>
-
+                <hr></hr>
             <form onSubmit={this.getByAccountNum}className="mx-auto mt-5 w-50" >
                 {/* <input name="id" type =" text" placeholder="Enter Account ID" value={this.state.id} 
                 onChange={this.onChange}
@@ -124,8 +122,9 @@ class Deposit extends Component {
                 </Form.Group>
                 <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
             </form>
+
         </div> );
     }
 }
  
-export default Deposit;
+export default Withdraw;

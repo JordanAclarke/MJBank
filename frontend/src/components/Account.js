@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
+import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Redirect } from 'react-router';
 
 class Account extends Component {
  
     state = { viewtable:true,
              accounts:[],
+
+             newaccount: {} ,
+
              newaccount: {
                  firstName:'',
                  lastName:'',
                  address:'',
                  ssNo:'',
                  openingBalance:''
-             } }
+             },
+            } 
+
  
     viewacc=()=>{
         this.setState({viewtable:true})
@@ -36,22 +43,41 @@ class Account extends Component {
         this.setState({accounts:body});
     }
 
+    getAccount=(e) => {
+        e.preventDefault();
+        console.log(this.state.id)
+        axios.get(`http://localhost:8080/api/getAccount/${this.state.id}`).then((res) => {
+        console.log(res.data)    
+        this.setState({singleAccount: res.data})
+        })
+    }
+
     createaccount = () =>
     {
         
-        axios.post('http://localhost:8080/api/addAccount',this.state.newaccount).then((res)=>{
+
+        console.log(this.state)
+        axios.post('http://localhost:8080/api/addAccount/',this.state.newaccount).then(()=>{
+            this.componentDidMount();
+
 
         }).catch(error =>{console.log(error)})
         
     }
     
+
+    
     
     render() { 
+
         const {accounts} = this.state;
         var form;
         if(!this.state.viewtable){
         form =  <div className="mx-auto mt-5 w-50">
-            <Form >
+
+            <div >
+                <form onSubmit={this.createaccount}>
+
                 <Form.Group controlId="FirstName" value={this.state.newaccount.firstName} onChange={this.onChange}>
                     <Form.Label>First Name</Form.Label>
                     <Form.Control name="firstName" type="text"  placeholder="Please Enter First Name" />
@@ -77,10 +103,14 @@ class Account extends Component {
                     <Form.Control name="openingBalance" type="text" placeholder="Minimum amount $500.00" />
                 </Form.Group>
                 
+                <input type="submit" />
+                <Form />
+                </form>
+            </div>
+
                 <Button variant="primary" type="submit" onClick={this.createaccount}>
                     Submit
                 </Button>
-            </Form>
         </div>;
         }else{
             form =<div className="mx-auto mt-5">

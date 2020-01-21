@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.mjbank.model.Account;
+import com.mjbank.repository.AccountRepository;
 import com.mjbank.service.AccountService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
@@ -33,8 +34,9 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 	
+	
 	@GetMapping("/getAllAccounts")
-	public List<Account> getAllAccounts() {
+	public  List<Account> getAllAccounts() {
 		List<Account> accountList = accountService.getAllAccounts();
 		return accountList;
 	}
@@ -46,6 +48,12 @@ public class AccountController {
 	
 	@PostMapping("/addAccount")
 	public ResponseEntity<?> addAccount(@Valid @RequestBody Account account) {
+		List<Account> listOfAccounts = accountService.getAllAccounts();
+		for(Account a: listOfAccounts) {
+			if(account.getSsNo().equals(a.getSsNo())) {
+				return new ResponseEntity<Account>(HttpStatus.FORBIDDEN);
+			}
+		}
 		if(account.getOpeningBalance() < 500) {
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		} else {
@@ -55,6 +63,7 @@ public class AccountController {
 		}
 	}
 	
+//	Update Address
 	@PutMapping("/updateAccountAddress/{id}")
 	public ResponseEntity<String> updateAccountAddress(@PathVariable int id, @RequestBody Map<String, String> address) {
 		Account newAccount = accountService.getByAccountId(id).get();
@@ -66,6 +75,7 @@ public class AccountController {
 		return new ResponseEntity<String>("Successfully Updated", HttpStatus.ACCEPTED);
 	}
 	
+//	Deposit
 	@PutMapping("/deposit/{id}")
 	public ResponseEntity<String> deposit(@PathVariable int id, @RequestParam("balance") double balance) {
 		Account newAccount = accountService.getByAccountId(id).get();
@@ -77,6 +87,7 @@ public class AccountController {
 		return new ResponseEntity<String>("Successfully Updated Balance", HttpStatus.ACCEPTED);
 	}
 	
+//	Withdraw
 	@PutMapping("/withdraw/{id}")
 	public ResponseEntity<String> withdraw(@PathVariable int id, @RequestParam("balance") double balance) {
 		Account newAccount = accountService.getByAccountId(id).get();
@@ -106,11 +117,33 @@ public class AccountController {
 //		}
 //	}
 	
+//	Delete Account
 	@DeleteMapping("/deleteAccount/{id}")
 	public String deleteAccount(@PathVariable int id) {
 		accountService.deleteAccount(id);
 		return "Account Deleted";
 	}
+	
+//	Find by Account Number
+	
+	@GetMapping("/getByAccountNum/{accountNumber}")
+	public ResponseEntity<Account> findByAccNum(@PathVariable("accountNumber") String accountNumber) {
+		Account account = null;
+		List<Account> accountList = accountService.getAllAccounts();
+		for(Account a: accountList) {
+			if(a.getAccountNumber().equals(accountNumber)) {
+				account = a;
+			}
+		}
+		if(account == null) {
+			return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+		}
+		System.out.println(account.toString());
+		return new ResponseEntity<Account>(account, HttpStatus.OK);
+	}
+	
+	
+//	
 
 	
 	

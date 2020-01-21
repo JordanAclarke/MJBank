@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import Popup from "reactjs-popup";
+
 import { Container,Form,Button,Nav,Table} from 'react-bootstrap';
-class Deposit extends Component {
+class DeleteAccount extends Component {
     state = {
         account: {},
         id: '',
         accountNum: '',
         display: false,
         balanceToAdd: '',
-        redirectToAllAccounts: false,
-        desposited: false
+        redirectToAllAccounts: false
     }
 
     getAccount=(e) => {
@@ -23,7 +22,6 @@ class Deposit extends Component {
         display: true})
         })
     }
-
     getByAccountNum=(e) => {
         e.preventDefault();
         console.log(this.state.accountNum)
@@ -33,16 +31,15 @@ class Deposit extends Component {
         display: true})
         })
     }
-    deposit=(e) => {
+    deleteAccount=(e) => {
         e.preventDefault();
         console.log(this.state.account.balance);
-    
-        // axios.put(`http://localhost:8080/api/deposit/${this.state.id}balance=${this.state.balance}`)
-        let formData = new FormData();
-        formData.append("balance",this.state.balanceToAdd)
-        axios.put(`http://localhost:8080/api/deposit/${this.state.id}?balance=${this.state.balance}`).then((res) => {
-            this.setState({account: res.data, redirectToAllAccounts: true, desposited: true});
+        axios.delete(`http://localhost:8080/api/deleteAccount/${this.state.id}`).then((res) => {
+            this.setState({redirectToAllAccounts: true});
         })
+    }
+    denyDelete=() => {
+        this.setState({redirectToAllAccounts: true})
     }
 
     onChange = (e) => {
@@ -63,7 +60,6 @@ class Deposit extends Component {
         // this.setState({accounts:body});
     }
     render() { 
-      
       if(this.state.redirectToAllAccounts) {
         return <Redirect to="/Account" />
       }
@@ -86,19 +82,17 @@ class Deposit extends Component {
                        <td>$ {(this.state.account.balance)}</td>
                     </tbody>
                     </Table>
-                    <form onSubmit={this.deposit} className="mx-auto mt-5 w-50" >
-                <Form.Group controlId="Balance" value={this.state.account.balance} onChange={this.balanceOnChange}>
-                    <Form.Label>Deposit Amount</Form.Label>
-                    <Form.Control name="balance" type="text" placeholder="Enter Deposit Amount" />
-                </Form.Group>
-                <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
-    
-                </form>
+                  <Form.Label>Are You Sure You Want To Delete This Account?</Form.Label>
+                  &nbsp;&nbsp;
+                  <Button variant="outline-danger" onClick={this.deleteAccount}>Yes</Button>
+                  &nbsp;&nbsp;
+                  <Button variant="outline-warning"onClick={this.denyDelete} >No</Button>
                 </div>
             );
+            
         }
         return ( <div>
-            <h1 className="title" style={{textAlign: "center"}}>🏧</h1>
+            <h1 className="title" style={{textAlign: "center"}}>😔</h1>
             <form onSubmit={this.getAccount}className="mx-auto mt-5 w-50" >
                 {/* <input name="id" type =" text" placeholder="Enter Account ID" value={this.state.id} 
                 onChange={this.onChange}
@@ -109,23 +103,25 @@ class Deposit extends Component {
                     <Form.Control name="id" type="text" placeholder="AccountID:" />
                 </Form.Group>
                 <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
+           
             </form>
 
             <hr></hr>
 
-            <form onSubmit={this.getByAccountNum}className="mx-auto mt-5 w-50" >
-                {/* <input name="id" type =" text" placeholder="Enter Account ID" value={this.state.id} 
-                onChange={this.onChange}
-                /> */}
-                <Form.Group controlId="Balance" value={this.state.accountNum} 
-                onChange={this.accountNumOnChange}>
-                    <Form.Label>Enter Account Number</Form.Label>
-                    <Form.Control name="id" type="text" placeholder="Account Number:" />
-                </Form.Group>
-                <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
-            </form>
+<form onSubmit={this.getByAccountNum}className="mx-auto mt-5 w-50" >
+    {/* <input name="id" type =" text" placeholder="Enter Account ID" value={this.state.id} 
+    onChange={this.onChange}
+    /> */}
+    <Form.Group controlId="Balance" value={this.state.accountNum} 
+    onChange={this.accountNumOnChange}>
+        <Form.Label>Enter Account Number</Form.Label>
+        <Form.Control name="id" type="text" placeholder="Account Number:" />
+    </Form.Group>
+    <Button style={{color:"white", background:"#673ab7"}} variant="success" type="submit">Submit</Button>
+</form>
+
         </div> );
     }
 }
  
-export default Deposit;
+export default DeleteAccount;
