@@ -111,6 +111,10 @@ public class AccountController {
 		newAccount.setBalance(oldBalance - balance);
 //		Testing Purposes
 		accountService.updateAccount(newAccount);
+		
+		 Transaction t =new Transaction(); t.setAccount(newAccount);
+		  t.setType("Withdraw"); t.setAmount(-1*balance); transactionService.saveTrans(t);
+		 
 		return new ResponseEntity<String>("Successfully Updated Balance", HttpStatus.ACCEPTED);
 		} else {
 			return new ResponseEntity<String>("Insufficient Funds", HttpStatus.NOT_ACCEPTABLE);

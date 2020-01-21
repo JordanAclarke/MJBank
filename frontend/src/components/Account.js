@@ -72,6 +72,7 @@ class Account extends Component {
         this.setState({show:a, accountNumber:accountNumber})
         axios.get('http://localhost:8080/api/transactions/'+accountNumber).then((res)=>{
             this.setState({Transaction:res.data});
+            console.log(res.data);
         })
     }
     setnotShow=(a)=>{
